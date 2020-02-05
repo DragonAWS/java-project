@@ -61,6 +61,11 @@
         <artifactId>aws-java-sdk-polly</artifactId>
         <version>1.11.500</version>
     </dependency>
+    <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-lexruntime</artifactId>
+        <version>1.11.500</version>
+    </dependency>
 	
 	<dependency>
 	    <groupId>software.amazon.awssdk</groupId>

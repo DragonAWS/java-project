@@ -8,7 +8,7 @@ import java.util.Date;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
-import com.amazonaws.regions.Regions;
+//import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lexruntime.AmazonLexRuntime;
 import com.amazonaws.services.lexruntime.AmazonLexRuntimeClientBuilder;
 import com.amazonaws.services.lexruntime.model.PostTextRequest;
@@ -41,7 +41,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 	AmazonS3 s3 = AmazonS3ClientBuilder.standard().build();
 	AmazonTranslate translate = AmazonTranslateClient.builder().build();
 	AmazonPolly polly = AmazonPollyClientBuilder.defaultClient();
-	AmazonLexRuntime lexclient = AmazonLexRuntimeClientBuilder.standard().withRegion(Region.US_EAST_1).build();
+	AmazonLexRuntime lexclient = AmazonLexRuntimeClientBuilder.standard().withRegion("us-east-1").build();
 	PostTextRequest textRequest = new PostTextRequest();
 	
 

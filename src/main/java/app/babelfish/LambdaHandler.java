@@ -64,7 +64,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 	 String frenchText ="salut comment allez-vous";
 	 String firstInput = synthesize(logger, frenchText, "fr");
 		File inputFiles = new File(firstInput);
-	String fileNames = saveOnS3(name.getBucket(), inputFiles);
+	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
 	 //TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
 	// String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_FR, inputFiles);
 		//Converting Audio to Text using Amazon Transcribe service.

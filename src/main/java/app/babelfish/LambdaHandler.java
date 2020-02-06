@@ -63,9 +63,9 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	 String frenchText ="Bonjour, comment allez-vous";
 	 String firstInput = synthesize(logger, frenchText, "ca","/temp/op.mp3");
-	 String fileName = saveOnS3(name.getBucket(), firstInput);
+	 String fileName = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
 		File inputFiles = new File("/temp/op.mp3");
-	s3.getObject(new GetObjectRequest(bucket, key), inputFiles);
+	s3.getObject(new GetObjectRequest(bucket, "input/op.mp3"), inputFiles);
 	logger.log()
 	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
 	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
@@ -86,14 +86,14 @@ public class LambdaHandler implements RequestHandler<Input, String> {
         String outputFile = synthesize(logger, translatedText, "ca", "/temp/output.mp3");
         
         //Saving output file on S3.
-        String fileName = saveOnS3(name.getBucket(), outputFile);
+        String fileName = saveOnS3(name.getBucket(), outputFile, "output/output.mp3");
     	
 		return fileName;
 	}
 	
-	private String saveOnS3(String bucket, String outputFile) {
+	private String saveOnS3(String bucket, String outputFile, String fileName) {
 		
-		String fileName = "output/" + new Date().getTime() + ".mp3";
+		//String fileName = "output/" + new Date().getTime() + ".mp3";
 		
 		PutObjectRequest request = new PutObjectRequest(bucket, fileName, new File(outputFile));
 		request.setCannedAcl(CannedAccessControlList.PublicRead);

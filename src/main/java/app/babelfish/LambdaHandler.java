@@ -55,31 +55,31 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 		logger.log("Bucket: " + name.getBucket());
 		logger.log("Key: " + name.getKey());
-		logger.log("Source Language: " + "ca");
-		logger.log("Target: " + "ca");
+		logger.log("Source Language: " + "fr");
+		logger.log("Target: " + "fr");
 		textRequest.setBotName("CEZ");
 		textRequest.setBotAlias("VCEZLex");
 		textRequest.setUserId("testuser");
 		
 	 String frenchText ="salut comment allez-vous?";
-	 String firstInput = synthesize(logger, frenchText, "ca");
+	 String firstInput = synthesize(logger, frenchText, "fr");
 		File inputFiles = new File(firstInput);
 	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
-	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, inputFiles);
+	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_FR, inputFiles);
 		//Converting Audio to Text using Amazon Transcribe service.
         //String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
 
         //Translating text from one language to another using Amazon Translate service.
-		String translatedText1 = translate(logger, transcripts,"ca", "en");
+		String translatedText1 = translate(logger, transcripts,"fr", "en");
 		textRequest.setInputText(translatedText1);
 		PostTextResult textResult = lexclient.postText(textRequest);
 
 		String outlex = textResult.getMessage();
-		String translatedText = translate(logger, outlex, "en", "ca");
+		String translatedText = translate(logger, outlex, "en", "fr");
 
         
         //Converting text to Audio using Amazon Polly service.
-        String outputFile = synthesize(logger, translatedText, "ca");
+        String outputFile = synthesize(logger, translatedText, "fr");
         
         //Saving output file on S3.
         String fileName = saveOnS3(name.getBucket(), outputFile);
@@ -134,8 +134,8 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 	
 	private String translate(LambdaLogger logger, String text, String sourceLanguage, String targetLanguage) {
 		
-		if (targetLanguage.equals("ca")) {
-			targetLanguage = "ca";
+		if (targetLanguage.equals("fr")) {
+			targetLanguage = "fr";
 		}
 		
 		if (targetLanguage.equals("gb")) {

@@ -62,8 +62,11 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		textRequest.setUserId("testuser");
 		
 	 String frenchText ="Bonjour, comment allez-vous";
-	 String firstInput = synthesize(logger, frenchText, "ca");
-		File inputFiles = new File(firstInput);
+	 String firstInput = synthesize(logger, frenchText, "ca","/temp/op.mp3");
+	 String fileName = saveOnS3(name.getBucket(), firstInput);
+		File inputFiles = new File("/temp/op.mp3");
+	s3.getObject(new GetObjectRequest(bucket, key), inputFiles);
+	logger.log()
 	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
 	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
 	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, inputFiles);
@@ -80,7 +83,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 
         
         //Converting text to Audio using Amazon Polly service.
-        String outputFile = synthesize(logger, translatedText, "ca");
+        String outputFile = synthesize(logger, translatedText, "ca", "/temp/output.mp3");
         
         //Saving output file on S3.
         String fileName = saveOnS3(name.getBucket(), outputFile);
@@ -156,7 +159,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	}
 	
-    private String synthesize(LambdaLogger logger, String text, String language) {
+    private String synthesize(LambdaLogger logger, String text, String language, String oputputFileName) {
     	
     	VoiceId voiceId = null;
 
@@ -205,7 +208,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
     	} 
 
     	
-        String outputFileName = "/tmp/output.mp3";
+        //String outputFileName = "/tmp/output.mp3";
  
         SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest().withOutputFormat(OutputFormat.Mp3).withSampleRate("22050").withVoiceId(voiceId).withText(text);
  

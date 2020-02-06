@@ -55,32 +55,32 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 		logger.log("Bucket: " + name.getBucket());
 		logger.log("Key: " + name.getKey());
-		logger.log("Source Language: " + "fr");
-		logger.log("Target: " + "fr");
+		logger.log("Source Language: " + "ca");
+		logger.log("Target: " + "ca");
 		textRequest.setBotName("CEZ");
 		textRequest.setBotAlias("VCEZLex");
 		textRequest.setUserId("testuser");
 		
-	 String frenchText ="salut comment allez-vous";
-	 String firstInput = synthesize(logger, frenchText, "fr");
+	 String frenchText ="Bonjour, comment allez-vous";
+	 String firstInput = synthesize(logger, frenchText, "ca");
 		File inputFiles = new File(firstInput);
 	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
-	 //TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
-	// String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_FR, inputFiles);
+	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
+	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, inputFiles);
 		//Converting Audio to Text using Amazon Transcribe service.
-        String transcript = transcribe(logger, name.getBucket(), name.getKey(), "fr");
+       // String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
 
         //Translating text from one language to another using Amazon Translate service.
-		String translatedText1 = translate(logger, transcript,"fr", "en");
+		String translatedText1 = translate(logger, transcripts,"ca", "en");
 		textRequest.setInputText(translatedText1);
 		PostTextResult textResult = lexclient.postText(textRequest);
 
 		String outlex = textResult.getMessage();
-		String translatedText = translate(logger, outlex, "en", "fr");
+		String translatedText = translate(logger, outlex, "en", "ca");
 
         
         //Converting text to Audio using Amazon Polly service.
-        String outputFile = synthesize(logger, translatedText, "fr");
+        String outputFile = synthesize(logger, translatedText, "ca");
         
         //Saving output file on S3.
         String fileName = saveOnS3(name.getBucket(), outputFile);
@@ -100,7 +100,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	}
 
-	private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
+	/*private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
 		
 		LanguageCode languageCode = LanguageCode.FR_CA;
 		
@@ -131,12 +131,12 @@ public class LambdaHandler implements RequestHandler<Input, String> {
         logger.log("Transcript: " + transcript);
  
         return transcript;
-	}
+	}*/
 	
 	private String translate(LambdaLogger logger, String text, String sourceLanguage, String targetLanguage) {
 		
-		if (targetLanguage.equals("fr")) {
-			targetLanguage = "fr";
+		if (targetLanguage.equals("ca")) {
+			targetLanguage = "ca";
 		}
 		
 		if (targetLanguage.equals("gb")) {
@@ -207,10 +207,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
     	
         String outputFileName = "/tmp/output.mp3";
  
-        SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest()
-                .withOutputFormat(OutputFormat.Mp3)
-                .withVoiceId(voiceId)
-                .withText(text);
+        SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest().withOutputFormat(OutputFormat.Mp3).withSampleRate("22050").withVoiceId(voiceId).withText(text);
  
         try (FileOutputStream outputStream = new FileOutputStream(new File(outputFileName))) {
             SynthesizeSpeechResult synthesizeSpeechResult = polly.synthesizeSpeech(synthesizeSpeechRequest);

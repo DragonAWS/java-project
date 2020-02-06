@@ -66,7 +66,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		File inputFiles = new File(firstInput);
 	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
 	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
-	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, inputFiles);
+	 String transcripts = synchronousClient.transcribeFile("fr-CA", inputFiles);
 		//Converting Audio to Text using Amazon Transcribe service.
        // String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
 
@@ -136,7 +136,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 	private String translate(LambdaLogger logger, String text, String sourceLanguage, String targetLanguage) {
 		
 		if (targetLanguage.equals("ca")) {
-			targetLanguage = "ca";
+			targetLanguage = "fr";
 		}
 		
 		if (targetLanguage.equals("gb")) {
@@ -207,7 +207,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
     	
         String outputFileName = "/tmp/output.mp3";
  
-        SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest().withOutputFormat(OutputFormat.Mp3).withSampleRate("22050").withVoiceId(voiceId).withText(text);
+        SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest().withOutputFormat(OutputFormat.Mp3).withVoiceId(voiceId).withText(text);
  
         try (FileOutputStream outputStream = new FileOutputStream(new File(outputFileName))) {
             SynthesizeSpeechResult synthesizeSpeechResult = polly.synthesizeSpeech(synthesizeSpeechRequest);

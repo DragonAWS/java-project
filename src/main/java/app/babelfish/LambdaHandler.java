@@ -61,16 +61,17 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		textRequest.setBotAlias("VCEZLex");
 		textRequest.setUserId("testuser");
 		
-	 String frenchText ="salut comment allez-vous?";
+	 String frenchText ="salut comment allez-vous";
 	 String firstInput = synthesize(logger, frenchText, "fr");
 		File inputFiles = new File(firstInput);
-	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
-	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_FR, inputFiles);
+	String fileNames = saveOnS3(name.getBucket(), inputFiles);
+	 //TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
+	// String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_FR, inputFiles);
 		//Converting Audio to Text using Amazon Transcribe service.
-        //String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
+        String transcript = transcribe(logger, name.getBucket(), name.getKey(), "fr");
 
         //Translating text from one language to another using Amazon Translate service.
-		String translatedText1 = translate(logger, transcripts,"fr", "en");
+		String translatedText1 = translate(logger, transcript,"fr", "en");
 		textRequest.setInputText(translatedText1);
 		PostTextResult textResult = lexclient.postText(textRequest);
 
@@ -99,7 +100,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	}
 
-	/*private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
+	private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
 		
 		LanguageCode languageCode = LanguageCode.FR_CA;
 		
@@ -124,13 +125,13 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
     	s3.getObject(new GetObjectRequest(bucket, key), inputFile);
 
-       
-        //String transcript = synchronousClient.transcribeFile(languageCode, inputFile);
+       TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
+        String transcript = synchronousClient.transcribeFile(languageCode, inputFile);
      
         logger.log("Transcript: " + transcript);
  
         return transcript;
-	}*/
+	}
 	
 	private String translate(LambdaLogger logger, String text, String sourceLanguage, String targetLanguage) {
 		

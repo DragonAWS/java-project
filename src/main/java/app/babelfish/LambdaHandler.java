@@ -61,11 +61,15 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		textRequest.setBotAlias("VCEZLex");
 		textRequest.setUserId("testuser");
 		
+	 String frenchText ="salut comment allez-vous?";
+	 String firstInput = synthesize(logger, frenchText, "ca");
+	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
+	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, firstInput);
 		//Converting Audio to Text using Amazon Transcribe service.
-        String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
+        //String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
 
         //Translating text from one language to another using Amazon Translate service.
-		String translatedText1 = translate(logger, transcript,"ca", "en");
+		String translatedText1 = translate(logger, transcripts,"ca", "en");
 		textRequest.setInputText(translatedText1);
 		PostTextResult textResult = lexclient.postText(textRequest);
 
@@ -119,7 +123,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
     	s3.getObject(new GetObjectRequest(bucket, key), inputFile);
 
-        TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
+       
         String transcript = synchronousClient.transcribeFile(languageCode, inputFile);
      
         logger.log("Transcript: " + transcript);

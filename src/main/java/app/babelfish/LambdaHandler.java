@@ -99,7 +99,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	}
 
-	private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
+	/*private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
 		
 		LanguageCode languageCode = LanguageCode.FR_CA;
 		
@@ -130,7 +130,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
         logger.log("Transcript: " + transcript);
  
         return transcript;
-	}
+	}*/
 	
 	private String translate(LambdaLogger logger, String text, String sourceLanguage, String targetLanguage) {
 		

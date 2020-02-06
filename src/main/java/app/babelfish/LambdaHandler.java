@@ -63,9 +63,9 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	 String frenchText ="Bonjour, comment allez-vous";
 	 String firstInput = synthesize(logger, frenchText, "ca","/temp/op.mp3");
-	 String fileName = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
+	 String fileNames = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
 		File inputFiles = new File("/temp/op.mp3");
-	s3.getObject(new GetObjectRequest(bucket, "input/op.mp3"), inputFiles);
+	s3.getObject(new GetObjectRequest(name.getBucket(), "input/op.mp3"), inputFiles);
 	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
 	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
 	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, inputFiles);
@@ -158,7 +158,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	}
 	
-    private String synthesize(LambdaLogger logger, String text, String language, String oputputFileName) {
+    private String synthesize(LambdaLogger logger, String text, String language, String outputFileName) {
     	
     	VoiceId voiceId = null;
 

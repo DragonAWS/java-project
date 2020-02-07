@@ -75,7 +75,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
        String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
 
         //Translating text from one language to another using Amazon Translate service.
-		String translatedText1 = translate(logger, transcripts,"ca", "en");
+		String translatedText1 = translate(logger, transcript,"ca", "en");
 		textRequest.setInputText(translatedText1);
 		PostTextResult textResult = lexclient.postText(textRequest);
 

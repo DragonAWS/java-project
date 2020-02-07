@@ -62,17 +62,17 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		textRequest.setBotAlias("VCEZLex");
 		textRequest.setUserId("testuser");
 		
-	 String frenchText ="Bonjour, comment allez-vous";
-	 String firstInput = synthesize(logger, frenchText, "ca","/tmp/op.mp3");
-	 String fileNames = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
+	 //String frenchText ="Bonjour, comment allez-vous";
+	 //String firstInput = synthesize(logger, frenchText, "ca","/tmp/op.mp3");
+	 //String fileNames = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
 		//File inputFiles = new File("https://voicetranslatorapp-voicetranslatorbucket-1qugl31wlvtv2.s3.amazonaws.com/input/op.mp3");
 	//S3Object fullObject = s3.getObject(new GetObjectRequest(name.getBucket(), "input/op.mp3"));
 	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
-		File inputFiles = new File("/tmp/op.mp3");
-	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
-	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, inputFiles);
+		//File inputFiles = new File("/tmp/op.mp3");
+	// TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
+	// String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, inputFiles);
 		//Converting Audio to Text using Amazon Transcribe service.
-       // String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
+       String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
 
         //Translating text from one language to another using Amazon Translate service.
 		String translatedText1 = translate(logger, transcripts,"ca", "en");
@@ -104,7 +104,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		
 	}
 
-	/*private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
+	private String transcribe(LambdaLogger logger, String bucket, String key, String sourceLanguage) {
 		
 		LanguageCode languageCode = LanguageCode.FR_CA;
 		
@@ -135,7 +135,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
         logger.log("Transcript: " + transcript);
  
         return transcript;
-	}*/
+	}
 	
 	private String translate(LambdaLogger logger, String text, String sourceLanguage, String targetLanguage) {
 		

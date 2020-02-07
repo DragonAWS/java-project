@@ -66,10 +66,10 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 	 String firstInput = synthesize(logger, frenchText, "ca","/temp/op.mp3");
 	 String fileNames = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
 		//File inputFiles = new File("/temp/op.mp3");
-	S3Object fullObject = s3.getObject(new GetObjectRequest(name.getBucket(), "input/op.mp3"));
+	//S3Object fullObject = s3.getObject(new GetObjectRequest(name.getBucket(), "input/op.mp3"));
 	//String fileNames = saveOnS3(name.getBucket(), inputFiles);
 	 TranscribeStreamingSynchronousClient synchronousClient = new TranscribeStreamingSynchronousClient(TranscribeStreamingClientWrapper.getClient());
-	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, fullObject.getObjectContent());
+	 String transcripts = synchronousClient.transcribeFile(LanguageCode.FR_CA, "https://voicetranslatorapp-voicetranslatorbucket-1qugl31wlvtv2.s3.amazonaws.com/input/op.mp3");
 		//Converting Audio to Text using Amazon Transcribe service.
        // String transcript = transcribe(logger, name.getBucket(), name.getKey(), "ca");
 

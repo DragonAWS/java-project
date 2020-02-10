@@ -67,6 +67,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		utteranceObj.setBotName("UtterBot");
 		textRequests.setBotName("UtterBot");
 		textRequests.setBotAlias("Text");
+		textRequests.setUserId("testuser");
 		textRequest.setBotName("CEZ");
 		textRequest.setBotAlias("VCEZLex");
 		textRequest.setUserId("testuser");

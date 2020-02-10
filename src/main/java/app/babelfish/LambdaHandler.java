@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.Map;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
@@ -211,7 +212,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
     	
         //String outputFileName = "/tmp/output.mp3";
  
-        SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest().withOutputFormat(OutputFormat.Mp3).withSampleRate("22050").withVoiceId(voiceId).withText(text);
+        SynthesizeSpeechRequest synthesizeSpeechRequest = new SynthesizeSpeechRequest().withOutputFormat(OutputFormat.Mp3).withSampleRate("8000").withVoiceId(voiceId).withText(text);
  
         try (FileOutputStream outputStream = new FileOutputStream(new File(outputFileName))) {
             SynthesizeSpeechResult synthesizeSpeechResult = polly.synthesizeSpeech(synthesizeSpeechRequest);

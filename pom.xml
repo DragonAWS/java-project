@@ -78,7 +78,12 @@
 	    <version>2.5.25</version>
 	</dependency>
 
-
+<dependency>
+   <groupId>com.github.goxr3plus</groupId>
+   <artifactId>java-stream-player</artifactId>
+   <version>9.0.4</version>
+</dependency>
+	  
 <dependency>
     <groupId>org.slf4j</groupId>
     <artifactId>slf4j-api</artifactId>
@@ -87,6 +92,12 @@
 
 
   </dependencies>
+  <repositories>
+	<repository>
+	   <id>jitpack.io</id>
+	   <url>https://jitpack.io</url>
+        </repository>
+</repositories>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>

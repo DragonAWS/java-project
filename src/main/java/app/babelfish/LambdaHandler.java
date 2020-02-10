@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
+import java.util.*;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
@@ -14,6 +15,8 @@ import com.amazonaws.services.lexruntime.AmazonLexRuntime;
 import com.amazonaws.services.lexruntime.AmazonLexRuntimeClientBuilder;
 import com.amazonaws.services.lexruntime.model.PostTextRequest;
 import com.amazonaws.services.lexruntime.model.PostTextResult;
+import com.amazonaws.services.lexmodelbuilding.model.GetUtterancesViewResult;
+import com.amazonaws.services.lexmodelbuilding.model.UtteranceList;
 import com.amazonaws.services.translate.AmazonTranslate;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -45,7 +48,9 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 	AmazonPolly polly = AmazonPollyClientBuilder.defaultClient();
 	AmazonLexRuntime lexclient = AmazonLexRuntimeClientBuilder.standard().withRegion("us-east-1").build();
 	PostTextRequest textRequest = new PostTextRequest();
-	
+	PostTextRequest textRequests = new PostTextRequest();
+	GetUtterancesViewResult utteranceObj = new GetUtterancesViewResult();
+	List<UtteranceList> utterlist = new ArrayList(UtteranceList());
 
 
     
@@ -59,11 +64,18 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		logger.log("Key: " + name.getKey());
 		logger.log("Source Language: " + "ca");
 		logger.log("Target: " + "ca");
+		utteranceObj.setBotName("UtterBot");
+		textRequests.setBotName("UtterBot");
+		textRequests.setBotAlias("Text");
 		textRequest.setBotName("CEZ");
 		textRequest.setBotAlias("VCEZLex");
 		textRequest.setUserId("testuser");
 		
-	 //String frenchText ="Bonjour, comment allez-vous";
+	 String frenchText ="Bonjour, comment allez-vous";
+		textRequests.setInputText(frenchText);
+		PostTextResult textResults = lexclient.postText(textRequests);
+		utterlist = utteranceObj.getUtterances();
+		logger.log(utterlist);
 	 //String firstInput = synthesize(logger, frenchText, "ca","/tmp/op.mp3");
 	 //String fileNames = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
 		//File inputFiles = new File("https://voicetranslatorapp-voicetranslatorbucket-1qugl31wlvtv2.s3.amazonaws.com/input/op.mp3");

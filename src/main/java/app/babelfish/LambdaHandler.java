@@ -50,7 +50,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 	PostTextRequest textRequest = new PostTextRequest();
 	PostTextRequest textRequests = new PostTextRequest();
 	GetUtterancesViewResult utteranceObj = new GetUtterancesViewResult();
-	List<UtteranceList> utterlist = new ArrayList(UtteranceList());
+	List<UtteranceList> utterlist = new ArrayList<UtteranceList>();
 
 
     

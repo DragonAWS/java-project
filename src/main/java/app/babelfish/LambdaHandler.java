@@ -76,7 +76,7 @@ public class LambdaHandler implements RequestHandler<Input, String> {
 		textRequests.setInputText(frenchText);
 		PostTextResult textResults = lexclient.postText(textRequests);
 		utterlist = utteranceObj.getUtterances();
-		logger.log(utterlist.toString());
+		System.out.println(utterlist.toString());
 	 //String firstInput = synthesize(logger, frenchText, "ca","/tmp/op.mp3");
 	 //String fileNames = saveOnS3(name.getBucket(), firstInput,"input/op.mp3");
 		//File inputFiles = new File("https://voicetranslatorapp-voicetranslatorbucket-1qugl31wlvtv2.s3.amazonaws.com/input/op.mp3");
